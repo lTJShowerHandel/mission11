@@ -21,12 +21,18 @@ public class BooksController : ControllerBase
         int page = 1,
         int pageSize = 5,
         string? sortBy = null,
-        string sortDirection = "asc")
+        string sortDirection = "asc",
+        string? category = null)
     {
         if (page < 1) page = 1;
         if (pageSize < 1) pageSize = 5;
 
         IQueryable<Book> query = _context.Books;
+
+        if (!string.IsNullOrWhiteSpace(category))
+        {
+            query = query.Where(b => b.Category == category);
+        }
 
         if (string.Equals(sortBy, "title", StringComparison.OrdinalIgnoreCase))
         {
@@ -57,6 +63,17 @@ public class BooksController : ControllerBase
         };
 
         return Ok(result);
+    }
+
+    [HttpGet("categories")]
+    public async Task<ActionResult<List<string>>> GetCategories()
+    {
+        var categories = await _context.Books
+            .Select(b => b.Category)
+            .Distinct()
+            .OrderBy(c => c)
+            .ToListAsync();
+        return Ok(categories);
     }
 }
 

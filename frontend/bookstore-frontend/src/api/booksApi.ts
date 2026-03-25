@@ -29,10 +29,16 @@ export async function getBooks(params: {
   pageSize: number;
   sortBy?: string;
   sortDirection?: 'asc' | 'desc';
+  category?: string;
 }) {
   const response = await apiClient.get<PagedResult<Book>>('/api/books', {
     params,
   });
+  return response.data;
+}
+
+export async function getCategories(): Promise<string[]> {
+  const response = await apiClient.get<string[]>('/api/books/categories');
   return response.data;
 }
 
