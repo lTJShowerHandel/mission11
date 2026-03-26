@@ -53,3 +53,41 @@ what kind of features are available.
 Submit a pUbLiC link to the GitHub repository along with your comment about the
 Bootstrap attributes you added via Learning Suite
 
+---
+
+Bootstrap Attributes Used (Mission 12 - "Not Covered in Class"):
+
+1. TOAST NOTIFICATIONS (ToastNotification.tsx)
+   Bootstrap's Toast component is a lightweight, dismissible notification popup.
+   Classes used:
+   - "toast-container position-fixed bottom-0 end-0 p-3"
+       • toast-container: wrapper that positions and stacks toasts
+       • position-fixed: takes the element out of normal flow and fixes it to the viewport
+       • bottom-0 / end-0: pins the container to the bottom-right corner of the screen
+   - "toast align-items-center text-bg-success border-0 show"
+       • toast: the base toast component class; hidden by default, shown when "show" is added
+       • text-bg-success: a contextual color helper that sets both text and background to the
+         "success" (green) theme color
+       • border-0: removes the default border
+       • show: dynamically added via React to make the toast visible
+   - "btn-close btn-close-white me-2 m-auto"
+       • btn-close: renders a styled × dismiss button
+       • btn-close-white: inverts the close icon to white so it's visible on a dark background
+   Used in: src/components/ToastNotification.tsx
+   Triggered: whenever a book is added to the cart, a green toast pops in the bottom-right
+   corner and auto-dismisses after 3 seconds.
+
+2. BADGES (CartPage.tsx, CartSummaryBar.tsx)
+   Bootstrap Badges are small count/label indicators that attach inline to text or buttons.
+   Classes used:
+   - "badge bg-secondary ms-2"  (CartPage.tsx — item count next to "Shopping Cart" heading)
+   - "badge bg-primary ms-1"    (CartSummaryBar.tsx — item count pill on the summary bar)
+       • badge: base class; makes the element display as an inline pill with padding and
+         rounded corners
+       • bg-secondary / bg-primary: sets the badge background to Bootstrap's secondary (gray)
+         or primary (blue) theme color
+       • ms-1 / ms-2: margin-start (left margin) spacer utilities to separate the badge from
+         the adjacent text
+   Used in: src/components/CartPage.tsx (line 14) and
+            src/components/CartSummaryBar.tsx (line 16)
+
