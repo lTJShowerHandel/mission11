@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type { Book, PagedResult } from '../api/booksApi';
 import { getBooks, getCategories } from '../api/booksApi';
 import { useCart } from '../context/CartContext';
@@ -7,27 +8,18 @@ import { ToastNotification } from './ToastNotification';
 
 const PAGE_SIZE_OPTIONS = [5, 10, 20];
 
-interface BooksListProps {
-  onViewCart: () => void;
-  initialPage?: number;
-  initialCategory?: string;
-  onStateChange?: (page: number, category: string) => void;
-}
+export function BooksList() {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-export function BooksList({
-  onViewCart,
-  initialPage = 1,
-  initialCategory = '',
-  onStateChange,
-}: BooksListProps) {
   const { addToCart } = useCart();
 
   const [data, setData] = useState<PagedResult<Book> | null>(null);
-  const [page, setPage] = useState(initialPage);
+  const [page, setPage] = useState(() => Number(searchParams.get('page') ?? '1'));
   const [pageSize, setPageSize] = useState(5);
   const [sortBy, setSortBy] = useState<string | undefined>('title');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [category, setCategory] = useState(initialCategory);
+  const [category, setCategory] = useState(() => searchParams.get('category') ?? '');
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +43,10 @@ export function BooksList({
           category: category || undefined,
         });
         setData(result);
-        onStateChange?.(page, category);
+        setSearchParams(
+          { page: String(page), ...(category ? { category } : {}) },
+          { replace: true }
+        );
       } catch (err) {
         console.error(err);
         setError('Failed to load books. Please try again.');
@@ -139,7 +134,7 @@ export function BooksList({
         </div>
       </div>
 
-      <CartSummaryBar onViewCart={onViewCart} />
+      <CartSummaryBar onViewCart={() => navigate('/cart')} />
 
       {loading && <div className="alert alert-info">Loading books...</div>}
       {error && <div className="alert alert-danger">{error}</div>}
@@ -152,7 +147,7 @@ export function BooksList({
         <>
           <div className="table-responsive">
             <table className="table table-striped table-hover">
-              <thead>
+              <thead className="table-dark">
                 <tr>
                   <th
                     role="button"
@@ -188,7 +183,7 @@ export function BooksList({
                     <td>
                       <button
                         type="button"
-                        className="btn btn-sm btn-outline-primary"
+                        className="btn btn-sm btn-primary"
                         onClick={() => handleAddToCart(book)}
                       >
                         Add to Cart

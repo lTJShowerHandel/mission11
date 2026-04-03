@@ -1,10 +1,8 @@
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
-interface CartPageProps {
-  onContinueShopping: () => void;
-}
-
-export function CartPage({ onContinueShopping }: CartPageProps) {
+export function CartPage() {
+  const navigate = useNavigate();
   const { items, updateQuantity, removeFromCart, totalItems, totalPrice } = useCart();
 
   return (
@@ -17,7 +15,7 @@ export function CartPage({ onContinueShopping }: CartPageProps) {
       {items.length === 0 ? (
         <div className="alert alert-info">
           Your cart is empty.{' '}
-          <button type="button" className="btn btn-link p-0" onClick={onContinueShopping}>
+          <button type="button" className="btn btn-link p-0" onClick={() => navigate('/')}>
             Browse Books
           </button>
         </div>
@@ -74,14 +72,14 @@ export function CartPage({ onContinueShopping }: CartPageProps) {
                 </tbody>
               </table>
             </div>
-            <button type="button" className="btn btn-outline-secondary" onClick={onContinueShopping}>
+            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/')}>
               &larr; Continue Shopping
             </button>
           </div>
 
           <div className="col-lg-4">
             <div className="card">
-              <div className="card-header">
+              <div className="card-header bg-primary text-white">
                 <h5 className="mb-0">Order Summary</h5>
               </div>
               <div className="card-body">

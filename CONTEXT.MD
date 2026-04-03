@@ -91,3 +91,30 @@ Bootstrap Attributes Used (Mission 12 - "Not Covered in Class"):
    Used in: src/components/CartPage.tsx (line 14) and
             src/components/CartSummaryBar.tsx (line 16)
 
+
+
+Mission #13 Assignment
+IS 413 - Hilton
+Continuing the Bookstore app from Mission #12, create a new Git branch for
+Phase #6.
+Add the ability for the user to add, delete, and update books in the database.
+Deploy the app to Azure.
+NOTE: In order for the TAs to be able to navigate to your admin page, we need to
+add a file on the front end. Remember that React is an SPA (Single Page
+Application), so if we try to type in something like “/adminbooks” after the URL,
+it will try to take the user to a different URL, rather than staying on the same page
+and going to a different React route. In order to fix that, we add a file in the
+“public” folder in React named “routes.json”, and then add the following code:
+{
+"routes": [
+{
+"route": "/*",
+"serve": "/index.html",
+"statusCode": 200
+}
+]
+}
+That will change the program so that routes like “/adminbooks” that come after the
+URL will keep the same page, but use the React route instead.
+Submit the link to your deployed website via Learning Suite. (If you did not
+deploy the website, submit your GitHub link.)
