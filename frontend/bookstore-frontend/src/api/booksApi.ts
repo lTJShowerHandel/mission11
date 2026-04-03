@@ -29,6 +29,7 @@ export async function getBooks(params: {
   pageSize: number;
   sortBy?: string;
   sortDirection?: 'asc' | 'desc';
+  category?: string;
 }) {
   const response = await apiClient.get<PagedResult<Book>>('/api/books', {
     params,
@@ -36,3 +37,20 @@ export async function getBooks(params: {
   return response.data;
 }
 
+export async function getCategories(): Promise<string[]> {
+  const response = await apiClient.get<string[]>('/api/books/categories');
+  return response.data;
+}
+
+export async function addBook(book: Omit<Book, 'bookId'>): Promise<Book> {
+  const response = await apiClient.post<Book>('/api/books', book);
+  return response.data;
+}
+
+export async function updateBook(id: number, book: Book): Promise<void> {
+  await apiClient.put(`/api/books/${id}`, book);
+}
+
+export async function deleteBook(id: number): Promise<void> {
+  await apiClient.delete(`/api/books/${id}`);
+}

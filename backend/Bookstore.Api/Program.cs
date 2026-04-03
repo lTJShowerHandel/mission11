@@ -14,19 +14,15 @@ builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
 {
+    var corsOrigins = builder.Configuration
+        .GetSection("CorsOrigins")
+        .Get<string[]>()
+        ?? Array.Empty<string>();
+
     options.AddDefaultPolicy(policy =>
-    {
         policy.AllowAnyHeader()
               .AllowAnyMethod()
-              // Allow local dev frontends running on different ports.
-              .WithOrigins(
-                  "http://localhost:5173",
-                  "https://localhost:5173",
-                  "http://localhost:5174",
-                  "https://localhost:5174",
-                  "http://localhost:5176",
-                  "https://localhost:5176");
-    });
+              .WithOrigins(corsOrigins));
 });
 
 var app = builder.Build();
